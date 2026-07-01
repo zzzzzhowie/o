@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>打开 Obsidian 笔记</title>
+<title>Open Obsidian note</title>
 <style>
   body{font-family:-apple-system,system-ui,sans-serif;margin:0;min-height:100vh;
        display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -15,12 +15,13 @@
 </style>
 </head>
 <body>
-  <div>正在打开 Obsidian…</div>
-  <a class="btn" id="go" href="#">👉 打开笔记</a>
+  <div>Opening Obsidian…</div>
+  <a class="btn" id="go" href="#">👉 Open note</a>
   <div class="path" id="path"></div>
 <script>
-  // 相对 vault 根的文件路径放在 URL 的 hash 里（# 之后的内容不会发到服务器，保护隐私）。
-  // 例：https://<user>.github.io/<repo>/#Algorithm%2F(难)4Sum.md
+  // The vault-relative file path lives in the URL hash (everything after # is never
+  // sent to the server, so the note path stays private).
+  // e.g. https://<user>.github.io/<repo>/#Algorithm%2F(hard)4Sum.md
   var params = new URLSearchParams(location.search);
   var vault = params.get('vault') || 'default';
   var file = decodeURIComponent(location.hash.slice(1) || '');
@@ -28,8 +29,9 @@
             '&file=' + encodeURIComponent(file);
   var go = document.getElementById('go');
   go.href = uri;
-  document.getElementById('path').textContent = file || '(未指定文件)';
-  // 自动尝试跳转（用户点进来即视为已授权的手势，多数手机浏览器允许直接唤起 App）
+  document.getElementById('path').textContent = file || '(no file specified)';
+  // Auto-attempt the jump: arriving via a tap counts as a user gesture,
+  // so most mobile browsers allow launching the app directly.
   if (file) { location.href = uri; }
 </script>
 </body>
