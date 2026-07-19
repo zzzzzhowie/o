@@ -30,9 +30,27 @@
   var go = document.getElementById('go');
   go.href = uri;
   document.getElementById('path').textContent = file || '(no file specified)';
+
+  // Close this leftover browser tab once Obsidian has been handed the note.
+  // window.close() only works on script-opened tabs; the window.open('','_self')
+  // trick covers some in-app browsers (e.g. Telegram) — both are best-effort and
+  // silently no-op where the browser forbids self-closing.
+  function closeSelf() {
+    window.close();
+    try { window.open('', '_self'); window.close(); } catch (e) {}
+  }
+
+  function launch() {
+    location.href = uri;
+    // Delay the close so the obsidian:// navigation fires first.
+    setTimeout(closeSelf, 600);
+  }
+
+  go.addEventListener('click', function () { setTimeout(closeSelf, 600); });
+
   // Auto-attempt the jump: arriving via a tap counts as a user gesture,
   // so most mobile browsers allow launching the app directly.
-  if (file) { location.href = uri; }
+  if (file) { launch(); }
 </script>
 </body>
 </html>
